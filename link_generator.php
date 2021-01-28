@@ -35,10 +35,21 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide link_generator')
 
 $link_generator_form->display();
 
-if ($link_generator_form->is_submitted() && !$link_generator_form->is_cancelled()) {
-    $link_generator_form_data = $link_generator_form->get_data();
+if ($link_generator_form->is_cancelled()) {
+    redirect($PAGE->url);
+} elseif ($link_generator_form_data = $link_generator_form->get_data()) {
     $link_generator_result_form = new \local_quickregister\link_generator_result_form();
-    $result_url = new moodle_url($link_generator_form_data->link_url ?? '/', ['subscription_data' => '', 'subscription_signature' => '', 'subscription_ts' => '']);
+
+    $subscription_data_fields = ['username', 'password', 'email', 'firstname', 'lastname', 'city', 'country'];
+    $subscription_data = [];
+    foreach ($subscription_data_fields as $field) {
+        $subscription_data[$field] = $link_generator_form_data->{$field};
+    }
+    $subscription_data = encode_subscription_data($subscription_data);
+    $subscription_ts = time();
+    $subscription_signature = hash_hmac('sha256', $subscription_data . $subscription_ts, get_config('local_quickregister', 'key'));
+
+    $result_url = new moodle_url($link_generator_form_data->link_url ?? '/', compact('subscription_data', 'subscription_signature', 'subscription_ts'));
 
     $link_generator_result_form->set_data([
         'result_url' => $result_url->out(false),

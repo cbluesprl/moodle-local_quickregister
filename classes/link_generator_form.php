@@ -28,6 +28,7 @@ class link_generator_form extends \moodleform
         }
         $mform->addElement('password', 'password', get_string('password'), ['maxlength' => 32, 'size' => 12]);
         $mform->setType('password', \core_user::get_property_type('password'));
+        //$mform->addRule('password', get_string('missingpassword'), 'required', null, 'client');
 
         $mform->addElement('text', 'email', get_string('email'), ['maxlength' => 100, 'size' => 25]);
         $mform->setType('email', \core_user::get_property_type('email'));
@@ -49,12 +50,14 @@ class link_generator_form extends \moodleform
 
         $mform->addElement('header', 'link_infos', get_string('link_generator_form_link_infos_header', 'local_quickregister'), '');
 
-        $mform->addElement('url', 'link_url', get_string('link_generator_form_link_url_label', 'local_quickregister'), ['size' => 50, 'required' => 'required'], ['usefilepicker' => false]);
+        $mform->addElement('url', 'link_url', get_string('link_generator_form_link_url_label', 'local_quickregister'), ['size' => 50], ['usefilepicker' => false]);
         $mform->setType('link_url', PARAM_URL);
-        $mform->setDefault('link_url', new \moodle_url('/'));
+        $mform->addRule('link_url', get_string('required'), 'required', null, 'client');
+        $mform->setDefault('link_url', new \moodle_url('/login/signup.php'));
 
-        $mform->addElement('text', 'link_anchor', get_string('link_generator_form_link_anchor_label', 'local_quickregister'), ['required' => 'required']);
+        $mform->addElement('text', 'link_anchor', get_string('link_generator_form_link_anchor_label', 'local_quickregister'));
         $mform->setType('link_anchor', PARAM_TEXT);
+        $mform->addRule('link_anchor', get_string('required'), 'required', null, 'client');
         $mform->setDefault('link_anchor', get_string('link_generator_form_link_anchor_default', 'local_quickregister'));
 
         $this->add_action_buttons(true, get_string('link_generator_form_button_label', 'local_quickregister'));
