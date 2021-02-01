@@ -53,7 +53,11 @@ class link_generator_form extends \moodleform
             $mform->addElement('header', 'campaign_infos', get_string('pluginname', 'local_campaign'), '');
             $mform->setExpanded('campaign_infos');
 
-            $mform->addElement('text', 'campaign', get_string('pluginname', 'local_campaign'));
+            require_once "{$CFG->dirroot}/local/campaign/lib.php";
+
+            $campaigns = local_campaign_split_lines(get_config('local_campaign', 'campaigns'));
+            $campaigns_options = ['' => get_string('link_generator_select_campaign', 'local_quickregister')] + array_combine($campaigns, $campaigns);
+            $mform->addElement('select', 'campaign', get_string('pluginname', 'local_campaign'), $campaigns_options);
             $mform->setType('campaign', PARAM_TEXT);
         }
 
