@@ -22,6 +22,7 @@
  */
 
 $string['pluginname'] = 'Quick register';
+$string['setting_visiblename'] = 'Quick register settings';
 $string['key_setting_name'] = 'Key';
 $string['key_setting_generate_new'] = 'Generate new random key';
 $string['key_setting_copy_to_clipboard'] = 'Copy key to clipboard';

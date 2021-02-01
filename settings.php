@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
 if ($hassiteconfig) {
     $settings = new admin_settingpage(
         'local_quickregister_settings',
-        get_string('pluginname', 'local_quickregister'),
+        get_string('setting_visiblename', 'local_quickregister'),
         'moodle/site:config'
     );
 
@@ -54,4 +54,6 @@ if ($hassiteconfig) {
         PARAM_TEXT,
         40
     ));
+
+    $ADMIN->add('localplugins', new admin_externalpage('local_quickregister_link_generator', get_string('link_generator_page_title', 'local_quickregister'), new moodle_url('/local/quickregister/link_generator.php')));
 }
