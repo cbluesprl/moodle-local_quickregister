@@ -21,37 +21,38 @@ function local_quickregister_before_http_headers()
         $signature = hash_hmac('sha256', $subscription_data . $subscription_ts, $key);
         $valid = ($subscription_ts < time() + 600) && $subscription_signature === $signature;
 
-        var_dump($valid);
-        die();
-
-        //$valid = true; // TODO: remove
-
         if ($valid) {
-            //$local_installed_plugins = core_plugin_manager::instance()->get_installed_plugins('local');
-            //if (array_key_exists('campaign', $local_installed_plugins)) {
-            //    $subscription_data['campaign'] = $_COOKIE['local_campaign'] ?? null; // TODO: use session
-            //}
-
+            $subscription_data = decode_subscription_data($subscription_data);
             $SESSION->local_quickregister = compact('subscription_data');
+
+            if (!empty($subscription_data['campaign'])) {
+                $local_installed_plugins = core_plugin_manager::instance()->get_installed_plugins('local');
+
+                if (array_key_exists('campaign', $local_installed_plugins)) {
+                    $SESSION->local_campaign = $subscription_data['campaign'];
+                }
+            }
+        } else {
+            unset($SESSION->local_quickregister);
         }
     }
 }
 
 function local_quickregister_extend_signup_form(MoodleQuickForm $mform) {
-    global $PAGE, $SESSION;
+    global $SESSION;
 
     /**
      * On signup page local_quickregister_extend_signup_form is called before local_quickregister_before_http_headers
      * But we want $SESSION->local_quickregister defined first
      */
-    if ($PAGE->url->get_path() !== '/login/signup.php') {
-        local_quickregister_before_http_headers();
-    }
+    local_quickregister_before_http_headers();
 
-    $subscription_data = decode_subscription_data($SESSION->local_quickregister['subscription_data']);
-    $mform->setDefaults($subscription_data);
+    if (!empty($SESSION->local_quickregister['subscription_data'])) {
+        $subscription_data = $SESSION->local_quickregister['subscription_data'];
+        $mform->setDefaults($subscription_data);
 
-    if (!empty($subcription_data['email'])) {
-        $mform->setDefault('email2', $subcription_data['email']);
+        if (!empty($subscription_data['email'])) {
+            $mform->setDefault('email2', $subscription_data['email']);
+        }
     }
 }

@@ -40,7 +40,7 @@ if ($link_generator_form->is_cancelled()) {
 } elseif ($link_generator_form_data = $link_generator_form->get_data()) {
     $link_generator_result_form = new \local_quickregister\link_generator_result_form();
 
-    $subscription_data_fields = ['username', 'password', 'email', 'firstname', 'lastname', 'city', 'country'];
+    $subscription_data_fields = ['username', 'password', 'email', 'firstname', 'lastname', 'city', 'country', 'campaign'];
     $subscription_data = [];
     foreach ($subscription_data_fields as $field) {
         $subscription_data[$field] = $link_generator_form_data->{$field};

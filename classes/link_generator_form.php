@@ -48,6 +48,15 @@ class link_generator_form extends \moodleform
         $mform->addElement('select', 'country', get_string('country'), $countries);
         $mform->setDefault('country', $CFG->country ?? '');
 
+        $local_installed_plugins = \core_plugin_manager::instance()->get_installed_plugins('local');
+        if (array_key_exists('campaign', $local_installed_plugins)) {
+            $mform->addElement('header', 'campaign_infos', get_string('pluginname', 'local_campaign'), '');
+            $mform->setExpanded('campaign_infos');
+
+            $mform->addElement('text', 'campaign', get_string('pluginname', 'local_campaign'));
+            $mform->setType('campaign', PARAM_TEXT);
+        }
+
         $mform->addElement('header', 'link_infos', get_string('link_generator_form_link_infos_header', 'local_quickregister'), '');
 
         $mform->addElement('url', 'link_url', get_string('link_generator_form_link_url_label', 'local_quickregister'), ['size' => 50], ['usefilepicker' => false]);
