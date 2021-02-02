@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <div class="card mb-3">
+        <!--<div class="card mb-3">
             <div class="card-header">
                 <h2 class="card-title">Campaign</h2>
             </div>
@@ -76,7 +76,7 @@
                     <input type="text" class="form-control" id="campaign">
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <div class="card mb-3">
             <div class="card-header">
@@ -156,7 +156,7 @@
                 let lastname = form.elements['lastname'].value;
                 let city = form.elements['city'].value;
                 let country = form.elements['country'].value;
-                let campaign = form.elements['campaign'].value;
+                // let campaign = form.elements['campaign'].value;
                 let linkUrl = form.elements['link-url'].value;
                 let linkAnchor = form.elements['link-anchor'].value;
 
@@ -167,8 +167,8 @@
                     firstname: firstname,
                     lastname: lastname,
                     city: city,
-                    country: country,
-                    campaign: campaign
+                    country: country
+                    // campaign: campaign
                 };
                 let ts = Math.round((new Date()).getTime() / 1000);
                 let wordArray = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
