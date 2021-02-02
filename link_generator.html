@@ -15,7 +15,7 @@
 <div class="container">
     <h1>Quickregister link generator</h1>
 
-    <form id="form">
+    <form id="form" class="needs-validation" novalidate>
         <div class="card mb-3">
             <div class="card-header">
                 <h2 class="card-title">Key</h2>
@@ -23,7 +23,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="key" class="form-label">Key</label>
-                    <input type="text" class="form-control" id="key" value="yIyu91RT1BIxFUDjk33SCAcOVAYOhSmQ" required>
+                    <input type="text" class="form-control" id="key" required>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="link-url" class="form-label">Link URL</label>
-                    <input type="url" class="form-control" id="link-url" value="http://agoria.local74/login/signup.php" required>
+                    <input type="url" class="form-control" id="link-url" value="https://example.com/login/signup.php" required>
                 </div>
                 <div class="mb-3">
                     <label for="link-anchor" class="form-label">Link anchor</label>
@@ -117,6 +117,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // https://getbootstrap.com/docs/5.0/forms/validation/
+        let forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+
         let form = document.getElementById('form');
         let result = document.getElementById('result');
         // Countries from https://github.com/umpirsky/country-list
@@ -130,8 +145,9 @@
         }
 
         form.addEventListener('submit', (event) => {
-            event.preventDefault();
             if (form.checkValidity()) {
+                event.preventDefault();
+
                 let key = form.elements['key'].value;
                 let username = form.elements['username'].value;
                 let password = form.elements['password'].value;
@@ -155,9 +171,9 @@
                     campaign: campaign
                 };
                 let ts = Math.round((new Date()).getTime() / 1000);
-                // let dataEncoded = CryptoJS.enc.Base64.stringify(JSON.stringify(data));
-                let dataEncoded = btoa(JSON.stringify(data));
-                let signature = CryptoJS.HmacSHA256(dataEncoded + ts, key).toString()
+                let wordArray = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
+                let dataEncoded = CryptoJS.enc.Base64.stringify(wordArray);
+                let signature = CryptoJS.HmacSHA256(dataEncoded + ts, key).toString();
                 let searchParams = new URLSearchParams({
                     subscription_data: dataEncoded,
                     subscription_ts: ts,
@@ -172,7 +188,7 @@
             } else {
                 result.style.display = 'none';
             }
-        });
+        }, false);
     });
 
     function copyToClipboard(selector) {
