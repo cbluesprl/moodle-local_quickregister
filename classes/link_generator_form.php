@@ -1,4 +1,25 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @author    sreynders@cblue.be
+ * @copyright CBlue SPRL, support@cblue.be
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_quickregister
+ */
 
 namespace local_quickregister;
 
@@ -10,10 +31,13 @@ require_once "$CFG->libdir/formslib.php";
 require_once "$CFG->libdir/moodlelib.php";
 require_once "$CFG->libdir/classes/user.php";
 
-class link_generator_form extends \moodleform
-{
-    public function definition()
-    {
+class link_generator_form extends \moodleform {
+
+    /**
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
@@ -28,7 +52,6 @@ class link_generator_form extends \moodleform
         }
         $mform->addElement('password', 'password', get_string('password'), ['maxlength' => 32, 'size' => 12]);
         $mform->setType('password', \core_user::get_property_type('password'));
-        //$mform->addRule('password', get_string('missingpassword'), 'required', null, 'client');
 
         $mform->addElement('text', 'email', get_string('email'), ['maxlength' => 100, 'size' => 25]);
         $mform->setType('email', \core_user::get_property_type('email'));
@@ -53,7 +76,7 @@ class link_generator_form extends \moodleform
             $mform->addElement('header', 'campaign_infos', get_string('pluginname', 'local_campaign'), '');
             $mform->setExpanded('campaign_infos');
 
-            require_once "{$CFG->dirroot}/local/campaign/lib.php";
+            require_once "$CFG->dirroot/local/campaign/lib.php";
 
             $campaigns = local_campaign_split_lines(get_config('local_campaign', 'campaigns'));
             $campaigns_options = ['' => get_string('link_generator_select_campaign', 'local_quickregister')] + array_combine($campaigns, $campaigns);

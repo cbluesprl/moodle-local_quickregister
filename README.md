@@ -1,4 +1,5 @@
 # Moodle plugin local_quickregister
+
 This plugin provides a quick registration link with prefilled signup form data.
 
 It adds 2 admin pages :

@@ -38,3 +38,4 @@ $string['link_generator_result_form_link_label'] = 'HTML link';
 $string['link_generator_result_form_copy_to_clipboard'] = 'Copy to clipboard';
 $string['link_generator_generated_heading'] = 'Generated link';
 $string['link_generator_select_campaign'] = 'Select a campaign';
+$string['privacy:metadata'] = 'Quick register plugin does not store any personal data.';

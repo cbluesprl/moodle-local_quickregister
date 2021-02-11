@@ -21,10 +21,19 @@
  * @package   local_quickregister
  */
 
+namespace local_quickregister\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_quickregister';
-$plugin->version = 2021021100;
-$plugin->requires = 2020061500; // Moodle 3.9
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1';
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}

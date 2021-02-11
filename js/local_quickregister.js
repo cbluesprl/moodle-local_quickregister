@@ -1,4 +1,5 @@
 window.local_quickregister = {
+
     randomKey: function (length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -8,9 +9,11 @@ window.local_quickregister = {
         }
         return result;
     },
+
     generateRandomKey: function (length, selector) {
         document.querySelector(selector).value = this.randomKey(length);
     },
+
     copyToClipboard: function (selector) {
         var copyText = document.querySelector(selector);
 
