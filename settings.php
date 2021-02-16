@@ -51,5 +51,15 @@ if ($hassiteconfig) {
         )
     );
 
+    $settings->add(
+        new admin_setting_configduration(
+            'local_quickregister/link_validity_period',
+            get_string('link_validity_period', 'local_quickregister'),
+            '',
+            86400,
+            86400
+        )
+    );
+
     $ADMIN->add('localplugins', new admin_externalpage('local_quickregister_link_generator', get_string('link_generator_page_title', 'local_quickregister'), new moodle_url('/local/quickregister/link_generator.php')));
 }

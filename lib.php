@@ -55,8 +55,9 @@ function local_quickregister_before_http_headers() {
 
     if ($subscription_data && $subscription_signature && $subscription_ts) {
         $key = get_config('local_quickregister', 'key');
+        $link_validity_period = (int) get_config('local_quickregister', 'link_validity_period');
         $signature = hash_hmac('sha256', $subscription_data . $subscription_ts, $key);
-        $valid = ($subscription_ts < time() + TS_EXPIRY_AFTER) && $subscription_signature === $signature;
+        $valid = ($subscription_ts > time() - $link_validity_period) && $subscription_signature === $signature;
 
         if ($valid) {
             $subscription_data = decode_subscription_data($subscription_data);
