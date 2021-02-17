@@ -1,4 +1,6 @@
-# Moodle plugin local_quickregister
+# Moodle plugin local_campaign
+
+## Description
 
 This plugin provides a quick registration link with prefilled signup form data.
 
@@ -7,13 +9,16 @@ It adds 2 admin pages :
 2. A link generator page to generate the registration URL and HTML link.
 
 ## Standalone link generator
-The plugin adds a public standalone page at local/quickregister/link_generator.html
+The plugin has a public standalone page (in this README.md) that you can use.
 
 ## Installation
 Copy files in local/quickregister of your Moodle directory.
 
 ## Campaign plugin
-This plugins also works with local_campaign plugin, if enabled you can add current campaign in registration data.
+This plugins also works with local_campaign plugin (https://moodle.org/plugins/local_campaign), if enabled you can add current campaign in registration data.
+
+## Initial purpose
+The initial purpose of this plugin is to provide a tool for administrators to create a custom link to a person who redirects him/her to the account creation page with pre-filled information that the administrator puts in.
 
 ## HTML File
 
@@ -224,5 +229,4 @@ This plugins also works with local_campaign plugin, if enabled you can add curre
 </script>
 </body>
 </html>
-
 ```
