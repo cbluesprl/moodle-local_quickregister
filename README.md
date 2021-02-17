@@ -1,4 +1,4 @@
-# Moodle plugin local_campaign
+# Moodle plugin local_quickregister
 
 ## Description
 
