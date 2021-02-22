@@ -33,7 +33,7 @@ if ($hassiteconfig) {
 
     $ADMIN->add('localplugins', $settings);
 
-    $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/quickregister/js/local_quickregister.js'));
+    $PAGE->requires->js(new moodle_url('/local/quickregister/js/local_quickregister.js'));
 
     $buttons = [
         html_writer::tag('button', get_string('key_setting_generate_new', 'local_quickregister'), ['type' => 'button', 'class' => 'btn btn-secondary', 'onclick' => 'local_quickregister.generateRandomKey(32, "#id_s_local_quickregister_key")']),

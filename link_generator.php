@@ -57,7 +57,7 @@ if ($link_generator_form->is_cancelled()) {
     foreach ($subscription_data_fields as $field) {
         $subscription_data[$field] = $link_generator_form_data->{$field};
     }
-    $subscription_data = encode_subscription_data($subscription_data);
+    $subscription_data = local_quickregister_encode_subscription_data($subscription_data);
     $subscription_ts = time();
     $subscription_signature = hash_hmac('sha256', $subscription_data . $subscription_ts, get_config('local_quickregister', 'key'));
 

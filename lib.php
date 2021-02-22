@@ -23,13 +23,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-define('TS_EXPIRY_AFTER', 600); // 10 minutes
+define('LOCAL_QUICKREGISTER_TS_EXPIRY_AFTER', 600); // 10 minutes
 
 /**
  * @param $data
  * @return string
  */
-function encode_subscription_data($data) {
+function local_quickregister_encode_subscription_data($data) {
     return base64_encode(json_encode($data));
 }
 
@@ -38,7 +38,7 @@ function encode_subscription_data($data) {
  * @param bool $associative
  * @return mixed
  */
-function decode_subscription_data($data, $associative = true) {
+function local_quickregister_decode_subscription_data($data, $associative = true) {
     return json_decode(base64_decode($data), $associative);
 }
 
@@ -47,29 +47,31 @@ function decode_subscription_data($data, $associative = true) {
  * @throws dml_exception
  */
 function local_quickregister_before_http_headers() {
-    global $SESSION;
+    global $SESSION, $SCRIPT;
 
-    $subscription_data = optional_param('subscription_data', false, PARAM_RAW);
-    $subscription_signature = optional_param('subscription_signature', false, PARAM_ALPHANUM);
-    $subscription_ts = optional_param('subscription_ts', false, PARAM_INT);
+    if ($SCRIPT === '/login/signup.php') {
+        $subscription_data = optional_param('subscription_data', false, PARAM_RAW);
+        $subscription_signature = optional_param('subscription_signature', false, PARAM_ALPHANUM);
+        $subscription_ts = optional_param('subscription_ts', false, PARAM_INT);
 
-    if ($subscription_data && $subscription_signature && $subscription_ts) {
-        $key = get_config('local_quickregister', 'key');
-        $link_validity_period = (int) get_config('local_quickregister', 'link_validity_period');
-        $signature = hash_hmac('sha256', $subscription_data . $subscription_ts, $key);
-        $valid = ($subscription_ts > time() - $link_validity_period) && $subscription_signature === $signature;
+        if ($subscription_data && $subscription_signature && $subscription_ts) {
+            $key = get_config('local_quickregister', 'key');
+            $link_validity_period = (int)get_config('local_quickregister', 'link_validity_period');
+            $signature = hash_hmac('sha256', $subscription_data . $subscription_ts, $key);
+            $valid = ($subscription_ts > time() - $link_validity_period) && $subscription_signature === $signature;
 
-        if ($valid) {
-            $subscription_data = decode_subscription_data($subscription_data);
-            $SESSION->local_quickregister_subscription_data = $subscription_data;
+            if ($valid) {
+                $subscription_data = local_quickregister_decode_subscription_data($subscription_data);
+                $SESSION->local_quickregister_subscription_data = $subscription_data;
 
-            if (array_key_exists('campaign', core_plugin_manager::instance()->get_installed_plugins('local'))) {
-                if (!empty($subscription_data['campaign'])) {
-                    $SESSION->local_campaign = $subscription_data['campaign'];
+                if (array_key_exists('campaign', core_plugin_manager::instance()->get_installed_plugins('local'))) {
+                    if (!empty($subscription_data['campaign'])) {
+                        $SESSION->local_campaign = $subscription_data['campaign'];
+                    }
                 }
+            } else {
+                unset($SESSION->local_quickregister_subscription_data);
             }
-        } else {
-            unset($SESSION->local_quickregister_subscription_data);
         }
     }
 }
