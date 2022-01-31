@@ -14,6 +14,13 @@ The plugin has a public standalone page (in this README.md) that you can use.
 ## Installation
 Copy files in local/quickregister of your Moodle directory.
 
+## Usage
+### Required Moodle Settings
+Go to Administration > Plugins > Authentication > Manage Authentication
+Set the field "registerauth" to 'Email-based self-registration'. Otherwise, the plugin will throw an error 'Sorry, you may not use this page.'.
+### Plugin usage
+Go to Administration > Plugins > Local : Quickregister link generator
+
 ## Campaign plugin
 This plugins also works with local_campaign plugin (https://moodle.org/plugins/local_campaign), if enabled you can add current campaign in registration data.
 
