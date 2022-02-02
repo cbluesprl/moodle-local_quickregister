@@ -24,7 +24,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_quickregister';
-$plugin->version = 2022020200;
+$plugin->version = 2022020201;
 $plugin->requires = 2020061500; // Moodle 3.9
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = 'v1';
