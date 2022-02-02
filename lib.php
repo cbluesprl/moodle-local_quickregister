@@ -95,6 +95,9 @@ function local_quickregister_extend_signup_form(MoodleQuickForm $mform) {
         if (!empty($subscription_data['email'])) {
             $mform->setDefault('email2', $subscription_data['email']);
         }
+        if (isset($subscription_data['campaign'])) {
+            $SESSION->local_campaign = $subscription_data['campaign'];
+        }
         unset($SESSION->local_quickregister_subscription_data);
     }
 }
