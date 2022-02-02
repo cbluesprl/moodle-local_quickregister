@@ -24,7 +24,6 @@
 
 namespace local_quickregister;
 
-
 use core\event\user_created;
 use stdClass;
 
@@ -43,21 +42,18 @@ class observer {
             $config_campaigns = local_campaign_split_lines($config_campaigns);
 
             // Don't do anything if there's nothing in Session or if it doesn't match anything in local_campaign config
-            if (isset($SESSION->local_campaign) && array_key_exists($SESSION->local_campaign, $config_campaigns)) {
+            if (isset($SESSION->local_campaign) && !empty($config_campaigns) && array_key_exists($SESSION->local_campaign, $config_campaigns)) {
 
                 // Last security check : user exists & has been signed up using email-based method
-                $user = $DB->get_record('user', $event->relateduserid);
+                $user = $DB->get_record('user', ['id' => $event->relateduserid]);
                 if (empty($user) || $user->auth != 'email') {
                     return;
                 }
 
-                $profile_campaigns[] = $SESSION->local_campaign;
                 $field = $DB->get_record('user_info_field', ['shortname' => 'campaigns']);
 
                 $conditions = ['userid' => $event->relateduserid, 'fieldid' => $field->id];
                 $user_info_data = $DB->get_record('user_info_data', $conditions);
-                $data = implode(',', $profile_campaigns);
-                echo'<pre>';var_dump($data);
 
                 $dataobject = new stdClass();
                 $dataobject->userid = $event->relateduserid;
